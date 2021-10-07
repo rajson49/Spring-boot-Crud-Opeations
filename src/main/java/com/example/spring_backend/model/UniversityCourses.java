@@ -7,10 +7,11 @@ import javax.persistence.*;
 
 @Entity
 @Table(name = "employees")
-public class Employee {
+public class UniversityCourses {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id")
     private long id;
     @Column(name = "first_name")
     private String first_name;
@@ -20,13 +21,14 @@ public class Employee {
     private String email_id;
 
 
-    public Employee(String first_name, String last_name, String email_id) {
+    public UniversityCourses(long id,String first_name, String last_name, String email_id) {
+        this.id=id;
         this.first_name = first_name;
         this.last_name = last_name;
         this.email_id = email_id;
     }
 
-    public Employee() {
+    public UniversityCourses() {
 
     }
 
@@ -60,6 +62,11 @@ public class Employee {
 
     public void setEmail_id(String email_id) {
         this.email_id = email_id;
+    }
+
+    @Override
+    public String toString() {
+        return "Tutorial [id=" + id + ", first_name=" + first_name + ", desc=" + last_name + "]";
     }
 
 }
