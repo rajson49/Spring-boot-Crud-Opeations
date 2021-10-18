@@ -6,6 +6,7 @@ import com.example.spring_backend.ResponseMessage;
 import com.example.spring_backend.model.UniversityCourses;
 import com.example.spring_backend.services.CSVService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.origin.SystemEnvironmentOrigin;
 import org.springframework.core.io.InputStreamResource;
 import org.springframework.core.io.Resource;
 import org.springframework.http.HttpHeaders;
@@ -20,7 +21,7 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import java.util.List;
 
 
-//@CrossOrigin(origins = "http://localhost:4200")
+@CrossOrigin(origins = "*")
 @RequestMapping("/api/v1")
 @RestController
 public class CSVController {
@@ -54,6 +55,8 @@ public class CSVController {
 
             }catch (Exception e){
                 message = "Could not upload the file: " + file.getOriginalFilename() + "!" + e.getMessage();
+
+                System.out.println(e.getMessage());
                 return ResponseEntity.status(HttpStatus.EXPECTATION_FAILED)
                         .body(new ResponseMessage(message,""));
 
