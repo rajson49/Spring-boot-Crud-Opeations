@@ -18,12 +18,26 @@ public class CSVService {
     @Autowired
     UniversityCoursesRepository universityCoursesRepository;
 
-    public void save(MultipartFile file){
+    public void save(MultipartFile file,int i){
         try {
-            List<UniversityCourses> tutorials = CSVHelper.csvToTutorials(file.getInputStream());
+
+            List<UniversityCourses> tutorials=null;
+
+            if(i==0){
+                tutorials = CSVHelper.csvToTutorials(file.getInputStream());
+            }else if(i==1){
+                tutorials=CSVHelper.xlxsToMySql(file);
+            }
 
             //System.out.print(tutorials.size());
-            universityCoursesRepository.saveAll(tutorials);
+
+           if(tutorials.size()>0) {
+               universityCoursesRepository.saveAll(tutorials);
+           }
+           else{
+               System.out.print("list is empty!!");
+           }
+
         } catch (IOException e) {
             System.out.print(e.getMessage().toString());
             throw new RuntimeException("fail to store csv data: " + e.getMessage());

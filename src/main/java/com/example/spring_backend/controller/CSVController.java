@@ -40,7 +40,7 @@ public class CSVController {
 
             try{
 
-                csvService.save(file);
+                csvService.save(file,0);
 
                 message="Uploaded the file successfully:"+file.getOriginalFilename();
 
@@ -62,8 +62,32 @@ public class CSVController {
 
             }
 
-        }
+        }else if(CSVHelper.hasXlsxFormat(file)){
 
+            try{
+
+                csvService.save(file,1);
+
+                message="Uploaded the file successfully:"+file.getOriginalFilename();
+
+                String fileDownloadUri=
+                        ServletUriComponentsBuilder.fromCurrentContextPath()
+                                .path("/api/v1/download/")
+                                .path(file.getOriginalFilename())
+                                .toUriString();
+
+                return ResponseEntity.status(HttpStatus.OK)
+                        .body(new ResponseMessage(message,fileDownloadUri));
+
+            }catch (Exception e){
+                message = "Could not upload the file: " + file.getOriginalFilename() + "!" + e.getMessage();
+                System.out.println(e.getMessage());
+                return ResponseEntity.status(HttpStatus.EXPECTATION_FAILED)
+                        .body(new ResponseMessage(message,""+e.getMessage()));
+
+            }
+
+        }
         message = "Please upload a csv file!";
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).
                 body(new ResponseMessage(message,""));
